@@ -83,6 +83,8 @@ def download_images():
 
 def auth():
     """ start browser to authorize your app for read access to your profile
+
+    THIS MAY NOT BE NECESSARY!!
     """
     flickr = init_api()
     (token, frob) = flickr.get_token_part_one(perms='read')

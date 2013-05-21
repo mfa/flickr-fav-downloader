@@ -25,7 +25,12 @@ Add this key and secret to a file called credentials.py.
   KEY = "YOUR KEY TO THE FLICKR API"
   SECRET = "YOUR SECRET TO THE FLICKR API"
   STORAGE = '/path/to/where/you/want/all/data/go'
+  USERID = '12345678@N01'
 
+
+To get your userid run ``python favdownloader.py get_userid <username>`` or copy from flickr urls.
+Update database with images using ``python favdownloader.py update``.
+And download all images in local database using ``python favdownloader.py download``
 
 
 References
