@@ -1,15 +1,19 @@
 import flickrapi
-from credentials import KEY, SECRET, STORAGE, USERID
 import shelve
 import os
 import requests
 from docopt import docopt
 
+from credentials import KEY, SECRET, STORAGE, USERID
+
+
 def get_shelf(filename='fav.shelf'):
     return shelve.open(os.path.join(STORAGE, filename))
 
+
 def init_api():
     return flickrapi.FlickrAPI(KEY, SECRET)
+
 
 def update_database(user_id=USERID):
     """ update favs from specified user via flickr api and save data in shelf
@@ -22,7 +26,7 @@ def update_database(user_id=USERID):
     max_page = int(a[0].attrib.get('pages'))
     total = a[0].attrib.get('total')
     # iterate over all pages
-    for page in range(1,max_page):
+    for page in range(1, max_page):
         # get photos on page
         photos = flickr.favorites_getList(user_id=user_id, page=page)[0]
         for photo in photos:
@@ -36,7 +40,7 @@ def update_database(user_id=USERID):
                 sizes = flickr.photos_getSizes(photo_id=id)[0]
                 print("%s" % id)
                 best = None
-                best_height=0
+                best_height = 0
                 for size in sizes:
                     if int(size.attrib.get('height')) > best_height:
                         best = size
@@ -54,6 +58,7 @@ def update_database(user_id=USERID):
             else:
                 print("already in shelf: %s" % id)
     shelf.close()
+
 
 def download_images():
     """ download all images in shelf that has no file attribute.
@@ -79,7 +84,7 @@ def download_images():
                 shelf.sync()
         else:
             print("already downloaded %s" % key)
-            
+
 
 def auth():
     """ start browser to authorize your app for read access to your profile
@@ -88,7 +93,8 @@ def auth():
     """
     flickr = init_api()
     (token, frob) = flickr.get_token_part_one(perms='read')
-    if not token: raw_input("Press ENTER after you authorized this program")
+    if not token:
+        raw_input("Press ENTER after you authorized this program")
     flickr.get_token_part_two((token, frob))
 
 
