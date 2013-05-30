@@ -4,14 +4,19 @@ import os
 import requests
 from docopt import docopt
 
+# app based credentials -- needs to be set first!
 from credentials import KEY, SECRET, STORAGE, USERID
 
 
 def get_shelf(filename='fav.shelf'):
+    """ returns opened shelf
+    """
     return shelve.open(os.path.join(STORAGE, filename))
 
 
 def init_api():
+    """ returns connected API object
+    """
     return flickrapi.FlickrAPI(KEY, SECRET)
 
 
@@ -38,7 +43,6 @@ def update_database(user_id=USERID):
                 d['owner'] = photo.attrib.get('owner')
                 # get original sized image data via api
                 sizes = flickr.photos_getSizes(photo_id=id)[0]
-                print("%s" % id)
                 best = None
                 best_height = 0
                 for size in sizes:
@@ -90,6 +94,8 @@ def auth():
     """ start browser to authorize your app for read access to your profile
 
     THIS MAY NOT BE NECESSARY!!
+    Needs some further investigation.
+    Are Favourites public?
     """
     flickr = init_api()
     (token, frob) = flickr.get_token_part_one(perms='read')
